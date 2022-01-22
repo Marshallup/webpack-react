@@ -1,0 +1,7 @@
+.body {
+  padding: 0;
+  transform: rotate(360deg);
+  &::placeholder {
+    color: red;
+  }
+}

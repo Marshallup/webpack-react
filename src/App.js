@@ -1,11 +1,10 @@
 import React from "react";
-import puffins from 'images/puffins.jpg'
+import MainPage from 'pages/MainPage';
 
 export default function App() {
   return (
     <div>
-      <h2>Main page</h2>
-      <div>{ puffins }</div>
+      <MainPage/>
     </div>
   )
 }

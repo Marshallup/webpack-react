@@ -6,6 +6,20 @@ const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
 const paths = require('./config/paths');
 
+const postcssRule = {
+  loader: 'postcss-loader',
+  options: {
+    postcssOptions: {
+      plugins: [
+        'postcss-preset-env',
+        'autoprefixer',
+        'postcss-csso',
+        'postcss-normalize',
+      ]
+    }
+  }
+};
+
 const config = {
   mode: "development",
   entry: {
@@ -25,10 +39,19 @@ const config = {
       // include all types of chunks
       chunks: 'all',
       cacheGroups: {
-        react: {
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-          name: "react"
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'chunk-vendors',
+          priority: -10,
+          chunks: 'initial',
         },
+        common: {
+          name: 'chunk-common',
+          minChunks: 2,
+          priority: -20,
+          chunks: 'initial',
+          reuseExistingChunk: true,
+        }
       },
     },
     minimizer: [
@@ -60,7 +83,11 @@ const config = {
     extensions: ['*', '.js', '.jsx'],
     alias: {
       '@': paths.src,
+      'pages': paths.pages,
+      'components': paths.components,
       'images': paths.images,
+      'assets': paths.assets,
+      'scss': paths.scss,
     }
   },
   module: {
@@ -73,42 +100,28 @@ const config = {
         }
       },
       {
-        test: /\.module\.scss$/,
+        test: /\.s[ac]ss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
+          MiniCssExtractPlugin.loader,
           'css-loader',
-          {
-            loader: "sass-loader",
-            options: {
-							//importLoaders: 2,
-							modules: {
-								localIdentName: '[local]__[sha1:hash:hex:7]'
-							}
-						}
-          }
+          postcssRule,
+          'sass-loader',
         ]
       },
       {
-				test: /^((?!\.module).)*css$/,
-				use: [MiniCssExtractPlugin.loader, 'css-loader']
-			},
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          postcssRule,
+        ],
+      },
       { // config for images
         test: /\.(png|svg|jpg|jpeg|gif)$/,
         type: 'asset/resource',
         generator: {
           filename: 'images/[name]-[hash][ext]',
         }
-        // use: [
-        //   {
-        //     // loader: 'file-loader',
-        //     options: {
-        //       outputPath: 'images',
-        //       name: '[name]-[sha1:hash:hex:7].[ext]'
-        //     }
-        //   }
-        // ],
       },
       { // config for fonts
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -133,10 +146,7 @@ const config = {
             '**'
           ),
           filter: async(resourcePath) => {
-            if (/\.html$/.test(resourcePath)) {
-              return false;
-            }
-            return true;
+            return !/\.html$/.test(resourcePath);
           },
           to() {
             return '[name][ext]';
@@ -150,7 +160,7 @@ const config = {
         inject: 'body',
         filename: 'index.html',
     }),
-    new MiniCssExtractPlugin({ // plugin for controlling how compiled css will be outputted and named
+    new MiniCssExtractPlugin({
       filename: "css/[name].css",
       chunkFilename: "css/[id].css"
     })

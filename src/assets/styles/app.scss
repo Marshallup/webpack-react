@@ -1,0 +1,18 @@
+@font-face {
+  font-family: "Roboto";
+  src: url("fonts/Roboto-Black.ttf") format("ttf");
+  font-display: 'swap';
+}
+.body {
+  padding: 0;
+  transform: rotate(360deg);
+  &::placeholder {
+    color: red;
+  }
+}
+.container-bg {
+  width: 100px;
+  height: 100px;
+  background-image: url("images/puffins.webp");
+  background-size: contain;
+}

@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from '@/App';
 
-import 'scss/app.scss';
-// import 'bootstrap/dist/css/bootstrap.css';
+import 'assets/styles/app.scss';
+import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(<App/>, document.getElementById('app'));
 

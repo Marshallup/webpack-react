@@ -4,7 +4,8 @@ import MainPage from 'pages/MainPage';
 export default function App() {
   return (
     <div>
-      <MainPage/>
+        <MainPage/>
+        <div className={'container-bg'}></div>
     </div>
   )
 }

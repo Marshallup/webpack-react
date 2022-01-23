@@ -1,5 +1,5 @@
 import React from 'react';
-import puffins from 'images/puffins.jpg'
+import puffins from 'images/puffins.webp'
 import styles from './index.module.scss';
 
 export default function Title() {

@@ -6,7 +6,8 @@ module.exports = {
   dist: path.resolve(__dirname, '../dist'),
   assets: path.resolve(__dirname, '../src/assets'),
   images: path.resolve(__dirname, '../src/assets/images'),
-  scss: path.resolve(__dirname, '../src/assets/scss'),
+  fonts: path.resolve(__dirname, '../src/assets/fonts'),
+  scss: path.resolve(__dirname, '../src/assets/styles'),
   components: path.resolve(__dirname, '../src/components/'),
   pages: path.resolve(__dirname, '../src/pages'),
 }

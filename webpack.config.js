@@ -27,7 +27,8 @@ const config = {
 	mode: 'development',
 	entry: {
 		app: [
-			'./src/main.js',
+			'babel-polyfill',
+			'./src/index.js',
 		]
 	},
 	output: {
@@ -107,7 +108,14 @@ const config = {
 				test: /\.s[ac]ss$/,
 				use: [
 					MiniCssExtractPlugin.loader,
-					'css-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							modules: {
+								localIdentName: '[local]__[hash]',
+							},
+						},
+					},
 					postcssRule,
 					'sass-loader',
 				]

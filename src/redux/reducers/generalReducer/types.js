@@ -1,0 +1,1 @@
+export const PAGE_LOADER = 'GENERAL/PAGE_LOADER';

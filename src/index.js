@@ -1,12 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { StrictMode } from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from '@/redux';
 import App from '@/App';
 
 import 'assets/styles/app.scss';
-import 'bootstrap/dist/css/bootstrap.css';
 
-ReactDOM.render(<App/>, document.getElementById('app'));
+ReactDOM.render(
+    <StrictMode>
+        <Provider store={store}>
+            <Router>
+                <App/>
+            </Router>
+        </Provider>
+    </StrictMode>,
+    document.getElementById('app')
+);
 
 if (module.hot) { // enables hot module replacement if plugin is installed
- module.hot.accept();
+    module.hot.accept();
 }

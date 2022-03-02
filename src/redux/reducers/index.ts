@@ -1,4 +1,4 @@
-import generalReducer from './generalReducer';
+import generalReducer from './generalReducer/index';
 
 const reducers = {
     general: generalReducer,

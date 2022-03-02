@@ -2,8 +2,8 @@ import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from '@/redux';
-import App from '@/App';
+import store from 'src/redux';
+import App from 'src/App';
 
 import 'assets/styles/app.scss';
 

@@ -1,4 +1,6 @@
 const path = require('path');
+// import Compiler
+const { Compilation, sources } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Dotenv = require('dotenv-webpack');
@@ -23,15 +25,34 @@ const postcssRule = {
         },
     },
 };
+const PLUGIN_NAME = 'testPlugin';
+class TestPlugin {
+    apply(compiler) {
+        const logger = compiler.getInfrastructureLogger(PLUGIN_NAME);
+        logger.log('log from compiler');
+
+        compiler.hooks.done.tap(PLUGIN_NAME, (stats) => {
+            console.log('done!')
+        });
+        compiler.hooks.watchRun.tap(PLUGIN_NAME, (compiler) => {
+            console.log('run watcher...')
+        })
+        compiler.hooks.watchClose.tap(PLUGIN_NAME, () => {
+            // console.log(compiler, 'compiler')
+            console.log('stop watch')
+        })
+    }
+}
 
 const config = {
     mode: 'development',
     entry: {
         app: [
             'babel-polyfill',
-            './src/index.js',
+            './src/index.tsx',
         ]
     },
+    stats: 'errors-only',
     output: {
         filename: 'assets/js/[name].bundle.js',
         path: paths.dist, // base path where to send compiled assets
@@ -79,14 +100,27 @@ const config = {
         hot: true,
         client: {
             overlay: true,
-            logging: 'error',
+            logging: 'log',
         },
+        onListening: function (devServer) {
+            // console.clear();
+            console.log('devServer')
+        },
+        // setupMiddlewares: (middlewares, devServer) => {
+        //     return middlewares;
+        // },
         static: './public',
     },
+    infrastructureLogging: {
+        // colors: false,
+        console: {
+            info: (info) => {}
+        }
+    },
     resolve: {
-        extensions: [ '*', '.js', '.jsx' ],
+        extensions: [ '*', '.js', '.jsx', '.ts', '.tsx' ],
         alias: {
-            '@': paths.src,
+            'src': paths.src,
             'pages': paths.pages,
             'components': paths.components,
             'utils': paths.utils,
@@ -106,6 +140,18 @@ const config = {
                 use: {
                     loader: 'babel-loader'
                 },
+            },
+            { // config for es6 jsx
+                test: /\.(ts|tsx)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    },
+                    {
+                        loader: 'ts-loader'
+                    }
+                ],
             },
             {
                 test: /\.s[ac]ss$/,
@@ -148,6 +194,7 @@ const config = {
         ]
     },
     plugins: [
+        new TestPlugin(),
         new CopyPlugin({
             patterns: [
                 {

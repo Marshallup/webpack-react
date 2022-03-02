@@ -1,6 +1,6 @@
 import { applyMiddleware, compose, combineReducers, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import reducers from './reducers';
+import reducers from 'reducers/index';
 import rootSaga from './sagas';
 import { IS_DEV } from 'utils/constants';
 
@@ -12,7 +12,7 @@ const store = createStore(
         applyMiddleware(
             sagaMiddleware,
         ),
-        IS_DEV ? window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() : fn => fn,
+      IS_DEV ? (window as any)?.__REDUX_DEVTOOLS_EXTENSION__() : (fn: typeof compose) => fn,
     )
 );
 

@@ -2,7 +2,7 @@ import React from 'react';
 import puffins from 'images/puffins.webp'
 import styles from './index.module.scss';
 
-export default function Title() {
+function Title() {
     return (
         <div>
             <h1 className={styles.mainTitle}>Lazy title component with output styles</h1>
@@ -10,3 +10,4 @@ export default function Title() {
         </div>
     )
 }
+export default Title;
